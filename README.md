@@ -1,8 +1,31 @@
 # MSEM Thumbnail Generator
 
-This project is meant to automatically generate thumbnails for MSEM commentary videos.
+Automatically generate thumbnails for MSEM commentary videos.
 
-Currently it just automates the downloading of card images from the msem2 website.
+Currently this tool can only generate thumbnails in the format of my MSEM commentary video thumbnails.
+Don't know if I'll add more configuration options in the future.
+
+## msem_thumb
+
+```
+usage: msem_thumb.py [-h] config_json
+
+positional arguments:
+  config_json  Path to config json
+
+options:
+  -h, --help   show this help message and exit
+```
+
+The config json is used to configure the parameters of the thumbnail.
+See the `config.json` in `example` for an example of the json.
+
+Most properties in the json are optional. 
+If a property for an element is missing, then the script will simply skip generating that element.
+
+This script uses `cards.xml` to figure out urls from card names.
+The `cardsXmlPath` property in the config json is mandatory.
+See the `cardimgdl` part of the README for more details about the `cards.xml`.
 
 ## cardimgdl
 
