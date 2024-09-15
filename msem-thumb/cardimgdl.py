@@ -65,10 +65,10 @@ def find_card_in_xml(cardname: str, cards_xml_path: str) -> Element:
 
 
 if __name__ == "__main__":
-    parser = ArgumentParser()
+    parser = ArgumentParser(description='Download card images from the msem website')
 
-    parser.add_argument('-c', '--cardxml', type=str, required=True)
-    parser.add_argument('cardname')
+    parser.add_argument('-c', '--cardxml', type=str, required=True, help='Path to cards.xml')
+    parser.add_argument('cardname', help='Name of the card, as it appears on Cockatrice')
 
     args = parser.parse_args()
 
