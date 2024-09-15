@@ -268,10 +268,13 @@ def draw_card(cardname: str, cards_xml: Element,
 if __name__ == "__main__":
     parser = ArgumentParser(description='Generate msem video thumbnail')
 
+    parser.add_argument(
+        '-o', '--output', help='Name of the output file (no extension)', default='thumbnail')
+
     parser.add_argument('config_json', help='Path to config json')
 
     args = parser.parse_args()
     configs = read_configs(args.config_json)
     img = create_thumbnail(configs)
 
-    img.save('thumbnail.png')
+    img.save(args.output + '.png')

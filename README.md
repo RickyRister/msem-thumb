@@ -14,7 +14,9 @@ positional arguments:
   config_json  Path to config json
 
 options:
-  -h, --help   show this help message and exit
+  -h, --help            show this help message and exit
+  -o, --output OUTPUT
+                        Name of the output file (no extension)
 ```
 
 The config json is used to configure the parameters of the thumbnail.
