@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 '''
 For downloading an image from a card name
 '''
