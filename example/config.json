@@ -1,0 +1,19 @@
+{
+    "cardsXmlPath": "~/Library/Application Support/Cockatrice/Cockatrice/cards.xml",
+    "title": "Grand Prix Hyderabad",
+    "subtitle": "Round 3",
+    "logoPath": "./MSEMlogo.png",
+    "left": {
+        "playerName": "RickyRister",
+        "deckName": "UG Beans",
+        "frontCard": "Green Elemental Circle",
+        "backCard": "Jeffery Stages the Finale",
+        "pfpPath": "./Lava.png"
+    },
+    "right": {
+        "playerName": "Requiem",
+        "deckName": "UG Beans",
+        "frontCard": "Green Elemental Circle",
+        "backCard": "Jeffery Stages the Finale"
+    }
+}
