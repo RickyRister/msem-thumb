@@ -11,26 +11,26 @@ from urllib import request
 MSEM_CARD_URL_FMT = 'http://mse-modern.com/msem2/images/{setcode}/{setnum}.jpg '
 
 
-def get_img_url_msem(cardname: str, cards_xml_path: str) -> str:
+def get_img_url_msem(cardname: str, cards_xml: str | Element) -> str:
     '''
     Gets the image url of the card on the msem2 site
 
     Args:
         cardname: The card name, as it appears in cards.xml (aka on Cockatrice)
-        cards_xml_path: path to the cards.xml file
+        cards_xml: cards.xml, either as a path or loaded into an Element
     '''
-    node = find_card_in_xml(cardname, cards_xml_path)
+    node = find_card_in_xml(cardname, cards_xml)
     setcode = node.find('./set').text
     setnum = node.find('./set').get('num')
     return MSEM_CARD_URL_FMT.format(setcode=setcode, setnum=setnum)
 
 
-def find_card_in_xml(cardname: str, cards_xml_path: str) -> Element:
+def find_card_in_xml(cardname: str, cards_xml: str | Element) -> Element:
     '''
     Searches cards.xml for the card. Raises exception if not found
     Args:
         cardname: The card name, as it appears in cards.xml (aka on Cockatrice)
-        cards_xml_path: path to the cards.xml file
+        cards_xml: cards.xml, either as a path or loaded into an Element
 
     Returns:
         The xml node for that card. The node is be expected to have the following structure:
@@ -49,14 +49,14 @@ def find_card_in_xml(cardname: str, cards_xml_path: str) -> Element:
                 <tablerow>0</tablerow>
             </card>
     '''
-    # load cards.xml
-    root: Element
-    with open(cards_xml_path) as xml_file:
-        etree = ElementTree.parse(xml_file)
-        root = etree.getroot()
+    # load cards.xml if it's a path
+    if not isinstance(cards_xml , Element):
+        with open(cards_xml) as xml_file:
+            etree = ElementTree.parse(xml_file)
+            cards_xml = etree.getroot()
 
     # find the <card> node of the cardname
-    card_node: Element | None = root.find(f'.//card[name="{cardname}"]')
+    card_node: Element | None = cards_xml.find(f'.//card[name="{cardname}"]')
 
     if card_node is None:
         raise ValueError(f'[{cardname}] not found in cards.xml.')
