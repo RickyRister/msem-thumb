@@ -3,10 +3,7 @@
 from argparse import ArgumentParser
 import json
 import math
-import os.path
 from urllib import request
-from xml.etree import ElementTree
-from xml.etree.ElementTree import Element
 from PIL import Image
 from PIL import ImageFont
 from PIL import ImageDraw
@@ -126,7 +123,7 @@ def create_thumbnail(configs: dict) -> Image:
     # =============
 
     # load cards.xml
-    cards_xml: Element = load_cards_xml(configs.get(CARDS_XML_PATH))
+    cards_xml: str = configs.get(CARDS_XML_PATH)
 
     # left back card
     if (cardname := left_configs.get(BACK_CARD)) is not None:
@@ -225,25 +222,13 @@ def draw_text(text: str, xy: tuple[int, int], font: str, font_size: float,
     return base_image
 
 
-def load_cards_xml(cards_xml_path: str) -> Element:
-    '''Reads the cards.xml.
-    Does null checking and expands the users in the path
-    '''
-    if cards_xml_path is None:
-        raise ValueError('Path to cards.xml not given')
-    cards_xml_path = os.path.expanduser(cards_xml_path)
-    with open(cards_xml_path) as xml_file:
-        etree = ElementTree.parse(xml_file)
-        return etree.getroot()
-
-
-def draw_card(cardname: str, cards_xml: Element,
+def draw_card(cardname: str, cards_xml: str,
               rotation: float, xy: tuple[int, int]) -> Image:
     '''Finds, downloads, and positions the card image
 
     Args:
         cardname: The card name, as it appears in cards.xml (aka on Cockatrice)
-        cards_xml: cards.xml, preferrably as an Element
+        cards_xml: path to cards.xml
         rotation: card image's rotation
         xy: Coords of the top-left corner after rotation
 

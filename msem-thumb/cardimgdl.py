@@ -3,12 +3,30 @@
 '''
 For downloading an image from a card name
 '''
+import os
 from argparse import ArgumentParser
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 from urllib import request
+from functools import cache
 
 MSEM_CARD_URL_FMT = 'http://mse-modern.com/msem2/images/{setcode}/{setnum}.jpg '
+
+
+@cache
+def load_cards_xml(cards_xml_path: str) -> Element:
+    '''Reads the cards.xml.
+    Does null checking and expands the users in the path.
+
+    Caches the result so the xml doesn't get parsed multiple times.
+    DO NOT modify the Element that gets returned.
+    '''
+    if cards_xml_path is None:
+        raise ValueError('Path to cards.xml not given')
+    cards_xml_path = os.path.expanduser(cards_xml_path)
+    with open(cards_xml_path) as xml_file:
+        etree = ElementTree.parse(xml_file)
+        return etree.getroot()
 
 
 def get_img_url_msem(cardname: str, cards_xml: str | Element) -> str:
@@ -50,10 +68,8 @@ def find_card_in_xml(cardname: str, cards_xml: str | Element) -> Element:
             </card>
     '''
     # load cards.xml if it's a path
-    if not isinstance(cards_xml , Element):
-        with open(cards_xml) as xml_file:
-            etree = ElementTree.parse(xml_file)
-            cards_xml = etree.getroot()
+    if not isinstance(cards_xml, Element):
+        cards_xml = load_cards_xml(cards_xml)
 
     # find the <card> node of the cardname
     card_node: Element | None = cards_xml.find(f'.//card[name="{cardname}"]')
@@ -75,4 +91,3 @@ if __name__ == "__main__":
     url = get_img_url_msem(args.cardname, args.cardxml)
 
     request.urlretrieve(url, f'{args.cardname}.jpg')
-    
