@@ -13,6 +13,15 @@ from functools import cache
 MSEM_CARD_URL_FMT = 'http://mse-modern.com/msem2/images/{setcode}/{setnum}.jpg '
 
 
+class CardNotFound(Exception):
+    '''Raised when the given card name is not found in the cards.xml
+    '''
+
+    def __init__(self, cardname: str):
+        self.cardname = cardname
+        super().__init__(f'[{self.cardname}] not found in cards.xml.')
+
+
 @cache
 def load_cards_xml(cards_xml_path: str) -> Element:
     '''Reads the cards.xml.
@@ -76,7 +85,7 @@ def find_card_in_xml(cardname: str, cards_xml: str | Element) -> Element:
     card_node: Element | None = cards_xml.find(f'.//card[name="{cardname}"]')
 
     if card_node is None:
-        raise ValueError(f'[{cardname}] not found in cards.xml.')
+        raise CardNotFound(cardname)
 
     return card_node
 
@@ -91,5 +100,9 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     for cardname in args.cardnames:
-        url = find_img_url(cardname, args.cardxml)
-        request.urlretrieve(url, f'{cardname}.jpg')
+        try:
+            url = find_img_url(cardname, args.cardxml)
+            request.urlretrieve(url, f'{cardname}.jpg')
+            print(f'Succefully downloaded [{cardname}]')
+        except CardNotFound as e:
+            print(f'[{e.cardname}] not found in cards.xml; skipping...')
