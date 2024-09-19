@@ -8,7 +8,7 @@ from PIL import Image
 from PIL import ImageFont
 from PIL import ImageDraw
 from PIL import ImageOps
-from cardimgdl import get_img_url_msem
+from cardimgdl import find_img_url
 
 # ============
 # Constants
@@ -239,7 +239,7 @@ def draw_card(cardname: str, cards_xml: str,
     base_image = Image.new("RGBA", DIMENSIONS, (255, 255, 255, 0))
 
     # download and position card image
-    url = get_img_url_msem(cardname, cards_xml)
+    url = find_img_url(cardname, cards_xml)
     card_image = Image.open(request.urlopen(url))
     card_image = ImageOps.contain(card_image, CARD_IMG_DIM)
     card_image = card_image.convert('RGBA')

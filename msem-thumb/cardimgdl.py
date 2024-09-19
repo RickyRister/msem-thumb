@@ -29,18 +29,19 @@ def load_cards_xml(cards_xml_path: str) -> Element:
         return etree.getroot()
 
 
-def get_img_url_msem(cardname: str, cards_xml: str | Element) -> str:
+def find_img_url(cardname: str, cards_xml: str | Element, img_url_format: str = MSEM_CARD_URL_FMT) -> str:
     '''
-    Gets the image url of the card on the msem2 site
+    Gets the image url of the card.
 
     Args:
         cardname: The card name, as it appears in cards.xml (aka on Cockatrice)
         cards_xml: cards.xml, either as a path or loaded into an Element
+        img_url_format: url format corresponding to the card's image
     '''
     node = find_card_in_xml(cardname, cards_xml)
     setcode = node.find('./set').text
     setnum = node.find('./set').get('num')
-    return MSEM_CARD_URL_FMT.format(setcode=setcode, setnum=setnum)
+    return img_url_format.format(setcode=setcode, setnum=setnum)
 
 
 def find_card_in_xml(cardname: str, cards_xml: str | Element) -> Element:
@@ -88,6 +89,6 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    url = get_img_url_msem(args.cardname, args.cardxml)
+    url = find_img_url(args.cardname, args.cardxml)
 
     request.urlretrieve(url, f'{args.cardname}.jpg')
