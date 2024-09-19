@@ -85,10 +85,11 @@ if __name__ == "__main__":
     parser = ArgumentParser(description='Download card images from the msem website')
 
     parser.add_argument('-c', '--cardxml', type=str, required=True, help='Path to cards.xml')
-    parser.add_argument('cardname', help='Name of the card, as it appears on Cockatrice')
+    parser.add_argument('cardnames', nargs='*',
+                        help='Name(s) of the card(s), as they appear on Cockatrice')
 
     args = parser.parse_args()
 
-    url = find_img_url(args.cardname, args.cardxml)
-
-    request.urlretrieve(url, f'{args.cardname}.jpg')
+    for cardname in args.cardnames:
+        url = find_img_url(cardname, args.cardxml)
+        request.urlretrieve(url, f'{cardname}.jpg')
