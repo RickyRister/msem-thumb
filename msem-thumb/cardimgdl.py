@@ -99,6 +99,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
+    fail_count: int = 0
     for cardname in args.cardnames:
         try:
             url = find_img_url(cardname, args.cardxml)
@@ -106,3 +107,8 @@ if __name__ == "__main__":
             print(f'Succefully downloaded [{cardname}]')
         except CardNotFound as e:
             print(f'[{e.cardname}] not found in cards.xml; skipping...')
+            fail_count += 1
+
+    if fail_count > 0:
+        print(f"Failed to find {fail_count} card(s) in cards.xml.")
+        print("If you're certain the card names are correct, check that you have the cards.xml for the correct format loaded.")
