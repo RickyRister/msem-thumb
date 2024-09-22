@@ -241,9 +241,9 @@ def draw_card(cardname: str, cards_xml: str,
     # download and position card image
     url = find_img_url(cardname, cards_xml)
     card_image = Image.open(request.urlopen(url))
-    card_image = ImageOps.contain(card_image, CARD_IMG_DIM)
+    card_image = ImageOps.contain(card_image, CARD_IMG_DIM, method=Image.Resampling.LANCZOS)
     card_image = card_image.convert('RGBA')
-    card_image = card_image.rotate(rotation, expand=True, resample=Image.BICUBIC)
+    card_image = card_image.rotate(rotation, expand=True, resample=Image.Resampling.BICUBIC)
 
     # paste image onto blank base image
     base_image.paste(card_image, xy)
