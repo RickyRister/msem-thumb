@@ -61,7 +61,7 @@ def find_card_in_xml(cardname: str, cards_xml: str | Element) -> Element:
         cards_xml: cards.xml, either as a path or loaded into an Element
 
     Returns:
-        The xml node for that card. The node is be expected to have the following structure:
+        The xml node for that card. The node is expected to have the following structure:
             <card>
                 <name>Plains_TWR</name>
                 <text>({T}: Add {W}.)</text>
