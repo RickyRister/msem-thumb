@@ -35,10 +35,10 @@ See the `cardimgdl` part of the README for more details about the `cards.xml`.
 No more having to go to instigator and look up the card and then right clicking the image and then looking through your download folder!
 
 ```
-usage: cardimgdl.py -c CARDXML cardname
+usage: cardimgdl.py -c CARDXML [cardnames ...]
 
 positional arguments:
-  cardname              Name of the card, as it appears on Cockatrice
+  cardname              Name(s) of the card(s), as they appear on Cockatrice
 
 options:
   -h, --help            show this help message and exit
