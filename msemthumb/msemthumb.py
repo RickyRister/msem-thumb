@@ -237,7 +237,9 @@ def draw_card(cardname: str, cards_xml: str,
     base_image = Image.new("RGBA", DIMENSIONS, (255, 255, 255, 0))
 
     # download and position card image
+    print(f'Finding url for {cardname}')
     url = find_img_url(cardname, cards_xml)
+    print(f'Downloading image at {url}')
     card_image = Image.open(request.urlopen(url))
     card_image = ImageOps.contain(card_image, CARD_IMG_DIM, method=Image.Resampling.LANCZOS)
     card_image = card_image.convert('RGBA')
