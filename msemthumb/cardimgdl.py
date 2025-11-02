@@ -10,7 +10,7 @@ from xml.etree.ElementTree import Element
 from urllib import request
 from functools import cache
 
-MSEM_CARD_URL_FMT = 'http://mse-modern.com/msem2/images/{setcode}/{setnum}.jpg '
+MSEM_CARD_URL_FMT = 'https://raw.githubusercontent.com/cajunwritescode/MSEM/refs/heads/main/img/{setcode}/{setnum}.jpg?v={muid}'
 
 
 class CardNotFound(Exception):
@@ -50,7 +50,8 @@ def find_img_url(cardname: str, cards_xml: str | Element, img_url_format: str = 
     node = find_card_in_xml(cardname, cards_xml)
     setcode = node.find('./set').text
     setnum = node.find('./set').get('num')
-    return img_url_format.format(setcode=setcode, setnum=setnum)
+    muid = node.find('./set').get('muid')
+    return img_url_format.format(setcode=setcode, setnum=setnum, muid=muid)
 
 
 def find_card_in_xml(cardname: str, cards_xml: str | Element) -> Element:
